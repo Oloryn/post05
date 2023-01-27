@@ -28,7 +28,7 @@ var (
 
 func openConnection() (*sql.DB, error) {
 	// connection string
-	conn := fmt.Sprintf("host=%s post=%d user=%s password=%s dbname=%s sslmode=disable",
+	conn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		Hostname, Port, Username, Password, Database)
 	// open database
 	db, err := sql.Open("postgres", conn)
@@ -50,7 +50,7 @@ func exists(username string) int {
 	defer db.Close()
 	userID := -1
 	statement := fmt.Sprintf(`SELECT "id" FROM "users" WHERE username = '%s'`, username)
-	rows, err := db.Query(statement)
+	rows, _ := db.Query(statement)
 
 	for rows.Next() {
 		var id int
@@ -113,7 +113,7 @@ func DeleteUser(id int) error {
 	defer db.Close()
 	// Does the ID exist?
 	statement := fmt.Sprintf(`SELECT "username" FROM "users" WHERE id = %d`, id)
-	rows, err := db.Query(statement)
+	rows, _ := db.Query(statement)
 	var username string
 	for rows.Next() {
 		err = rows.Scan(&username)
@@ -123,7 +123,7 @@ func DeleteUser(id int) error {
 	}
 	defer rows.Close()
 	if exists(username) != id {
-		return fmt.Errorf("User with ID %d does not exist", id)
+		return fmt.Errorf("user with ID %d does not exist", id)
 	}
 
 	// Delete from Userdata
@@ -181,7 +181,7 @@ func UpdateUser(d Userdata) error {
 	defer db.Close()
 	userID := exists(d.Username)
 	if userID == -1 {
-		return errors.New("User does not exist")
+		return errors.New("user does not exist")
 	}
 	d.ID = userID
 	updateStatement := `UPDATE "userdata" set "name"=$1, "surname"=$2, "description=$e WHERE "userid=$4`
