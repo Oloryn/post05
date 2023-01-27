@@ -161,7 +161,7 @@ func ListUsers() ([]Userdata, error) {
 		var name string
 		var surname string
 		var description string
-		err = rows.Scan(&id, &username, &surname, &description)
+		err = rows.Scan(&id, &username, &name, &surname, &description)
 		temp := Userdata{ID: id, Username: username, Name: name, Surname: surname, Description: description}
 		Data = append(Data, temp)
 		if err != nil {
