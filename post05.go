@@ -93,7 +93,7 @@ func AddUser(d Userdata) int {
 	if userID == -1 {
 		return userID
 	}
-	insertStatement = `INSERT INTO "userdata" ("userid", "name", "surname", "description") values ($1, $2, $3, $4`
+	insertStatement = `INSERT INTO "userdata" ("userid", "name", "surname", "description") values ($1, $2, $3, $4)`
 
 	_, err = db.Exec(insertStatement, userID, d.Name, d.Surname, d.Description)
 	if err != nil {
@@ -184,7 +184,7 @@ func UpdateUser(d Userdata) error {
 		return errors.New("user does not exist")
 	}
 	d.ID = userID
-	updateStatement := `UPDATE "userdata" set "name"=$1, "surname"=$2, "description=$e WHERE "userid=$4`
+	updateStatement := `UPDATE "userdata" set "name"=$1, "surname"=$2, "description=$3 WHERE "userid"=$4)`
 	_, err = db.Exec(updateStatement, d.Name, d.Surname, d.Description, d.ID)
 	if err != nil {
 		return err
